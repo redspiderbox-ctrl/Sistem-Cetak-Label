@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Cetak Label (Tab 2 Besar)</title>
+    <title>Sistem Cetak Label (POLYTRON-KUPANG)</title>
     
     <!-- Pustaka Eksternal -->
     <script src="https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js"></script>
@@ -22,7 +22,7 @@
             
             /* Konfigurasi A4 Landscape */
             --label-h: 14mm;
-            --qty-side-w: 10mm; /* Default kecil (Tab 3) */
+            --qty-side-w: 14mm; /* Sedikit lebih lebar untuk menyeimbangkan font besar */
             --gap-x: 3mm; 
             --gap-y: 4mm;
         }
@@ -59,16 +59,16 @@
 
         /* === HEADER & TABS === */
         header { margin-bottom: 15px; border-bottom: 2px solid var(--bg-desk); padding-bottom: 10px; }
-        h1 { font-size: 1.1rem; color: var(--text-main); }
-        .subtitle { font-size: 0.8rem; color: var(--text-muted); }
+        h1 { font-size: 1.2rem; color: var(--text-main); }
+        .subtitle { font-size: 0.85rem; color: var(--text-muted); }
 
         .tabs { display: flex; gap: 5px; margin-bottom: 15px; }
         .tab-btn {
-            flex: 1; padding: 8px 4px; background: #f1f5f9;
+            flex: 1; padding: 8px; background: #f1f5f9;
             border: 1px solid var(--border); border-bottom: none;
             border-radius: 6px 6px 0 0;
             cursor: pointer; font-weight: 600; color: var(--text-muted);
-            font-size: 0.85rem; transition: all 0.2s; text-align: center;
+            font-size: 0.9rem; transition: all 0.2s;
         }
         .tab-btn.active { background: white; color: var(--primary); border-top: 3px solid var(--primary); margin-bottom: -1px; }
 
@@ -83,7 +83,7 @@
         .upload-btn {
             border: 2px dashed var(--border); background: white;
             color: var(--text-main); padding: 6px 12px;
-            border-radius: 4px; font-size: 0.85rem; font-weight: 500;
+            border-radius: 4px; font-size: 0.9rem; font-weight: 500;
             cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px;
         }
         .upload-btn:hover { border-color: var(--primary); background: #eff6ff; color: var(--primary); }
@@ -92,7 +92,7 @@
         }
 
         .action-btn {
-            padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.85rem;
+            padding: 6px 16px; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.85rem;
             display: flex; align-items: center; gap: 6px; transition: 0.2s;
         }
         .btn-primary { background: var(--primary); color: white; }
@@ -102,8 +102,6 @@
         .btn-danger:hover { background: #fef2f2; border-color: var(--danger); }
 
         /* === GRID SYSTEM === */
-        
-        /* Tab 1: Fixed Grid (Row Major) */
         .labels-grid-fixed {
             display: grid;
             grid-template-columns: repeat(6, 1fr); 
@@ -111,20 +109,9 @@
             align-content: start;
         }
 
-        /* Tab 2: Flex Wrap Row (Row Major - Kiri ke Kanan) */
-        .labels-grid-flex-row {
+        .labels-grid-flex {
             display: flex;
             flex-wrap: wrap;
-            gap: var(--gap-y) var(--gap-x);
-            align-content: flex-start;
-        }
-
-        /* Tab 3: Flex Wrap Column (COLUMN MAJOR - Atas ke Bawah) */
-        .labels-grid-flex-col {
-            display: flex;
-            flex-direction: column; 
-            flex-wrap: wrap; 
-            height: 190mm; 
             gap: var(--gap-y) var(--gap-x);
             align-content: flex-start;
         }
@@ -142,24 +129,15 @@
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
-        /* Default Flex (Kecil - Untuk Tab 3) */
+        /* TAB 2: Flex Mode */
         .label-card.flex-mode {
             width: auto; 
-            min-width: 30mm; 
-            max-width: 120mm; 
-            flex-shrink: 0;
-        }
-
-        /* SPECIAL: FLEX LARGE (Untuk Tab 2) */
-        .label-card.flex-large {
-            --qty-side-w: 14mm; /* Override lebar kotak qty jadi besar */
-            width: auto; 
-            min-width: 50mm; /* Lebar minimum lebih besar */
+            min-width: 50mm; /* Lebar minimum dinaikkan karena font besar */
             max-width: 150mm; 
             flex-shrink: 0;
         }
 
-        /* Mode Fixed (Tab 1) */
+        /* TAB 1: Fixed Mode */
         .label-card.fixed-mode {
             width: 100%;
         }
@@ -170,19 +148,22 @@
             flex-direction: column;
             padding: 2px;
             border-right: 1px solid #000;
-            justify-content: center; 
+            justify-content: center; /* Vertically center content */
             min-width: 20px;
         }
 
         .label-top {
             border-bottom: 1px solid #ccc;
-            height: 40%; 
+            height: 50%; /* Bagian atas lebih besar untuk font besar */
             margin-bottom: 1px;
             display: flex;
             align-items: center;
-            justify-content: center; 
+            justify-content: center; /* Center Teks Part */
             width: 100%;
         }
+
+        /* TAB 1 Override (Karena Tab 1 ukuran normal) */
+        .labels-grid-fixed .label-top { height: 40%; }
 
         .part-number {
             font-weight: 900; 
@@ -195,14 +176,14 @@
             text-align: center;
         }
 
-        /* Font Kecil (Tab 3) */
-        .flex-mode .part-number { font-size: 0.85rem; }
+        /* Override Font Size Tab 2 */
+        .labels-grid-flex .part-number {
+            font-size: 1.4rem; /* Font Sangat Besar */
+        }
         
-        /* Font Besar (Tab 2) */
-        .flex-large .part-number { font-size: 1.2rem; }
-        
+        /* Deskripsi Area */
         .desc-area {
-            height: 60%; 
+            height: 50%; /* Sisa tinggi */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -210,20 +191,28 @@
             overflow: hidden;
             padding: 0 2px;
         }
+        
+        /* Override Deskripsi Tab 1 */
+        .labels-grid-fixed .desc-area {
+            height: 60%;
+            align-items: flex-start;
+            justify-content: center;
+        }
 
         .desc-text {
-            font-size: 0.65rem; 
+            font-size: 0.7rem; 
             color: #333; 
             line-height: 1.1;
             width: 100%;
-            word-wrap: break-word;
+            word-wrap: break-word; /* Agar text turun ke bawah jika panjang */
         }
         
-        /* Font Desc Sedikit lebih besar di Tab 2 agar seimbang */
-        .flex-large .desc-text { font-size: 0.8rem; }
+        .labels-grid-fixed .desc-text {
+             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
 
         .qty-side {
-            width: var(--qty-side-w); /* Menggunakan variable */
+            width: var(--qty-side-w);
             background: #f1f5f9; 
             border-left: 1px solid #000; 
             display: flex;
@@ -234,14 +223,11 @@
 
         .qty-text {
             font-weight: 900;
-            font-size: 0.9rem; /* Kecil default */
+            font-size: 1.2rem; /* Sesuaikan dengan part number */
             color: #000;
             line-height: 1;
             text-align: center;
         }
-
-        /* Font Qty Besar (Tab 2) */
-        .flex-large .qty-text { font-size: 1.1rem; }
 
         .empty-msg {
             grid-column: 1 / -1;
@@ -267,18 +253,23 @@
 
     <div class="a4-paper">
         <header>
-            <h1>Sistem Cetak Label (Tab 2 Besar)</h1>
-            <div class="subtitle">Tab 1: Fixed &bull; Tab 2: Flex (Besar) &bull; Tab 3: Flex (Kecil & Col)</div>
+            <h1>Sistem Cetak Label (POLYTRON-KUPANG)</h1>
+            <div class="subtitle">Sistem Akan Otomatis Membuat Label Komponen Dengan Presisi</div>
         </header>
 
-        <!-- Navigasi Tab -->
+       
+       
+       <!-- Navigasi Tab -->
         <div class="tabs">
-            <button class="tab-btn active" id="btn-tab-1" onclick="switchTab(1)">Tab 1: Fixed</button>
-            <button class="tab-btn" id="btn-tab-2" onclick="switchTab(2)">Tab 2: Flex</button>
-            <button class="tab-btn" id="btn-tab-3" onclick="switchTab(3)">Tab 3: Col</button>
+            <button class="tab-btn active" id="btn-tab-1" onclick="switchTab(1)">
+                Tab 1: Label Part (Fixed)
+            </button>
+            <button class="tab-btn" id="btn-tab-2" onclick="switchTab(2)">
+                Tab 2: Label Stock (Flexible & Big)
+            </button>
         </div>
 
-        <!-- TAB 1: FIXED -->
+        <!-- TAB 1 -->
         <main id="view-tab-1">
             <section class="control-panel">
                 <div class="upload-box">
@@ -296,7 +287,7 @@
             </div>
         </main>
 
-        <!-- TAB 2: FLEX ROW (BESAR) -->
+        <!-- TAB 2 -->
         <main id="view-tab-2" class="hidden">
             <section class="control-panel">
                 <div class="upload-box">
@@ -309,26 +300,8 @@
                 <button class="action-btn btn-primary" id="btn-download-2" disabled onclick="generatePDF(2)">&#128196; Download PDF</button>
             </section>
 
-            <div class="labels-grid-flex-row" id="grid-2">
+            <div class="labels-grid-flex" id="grid-2">
                 <div class="empty-msg">Upload Excel untuk Tab 2.</div>
-            </div>
-        </main>
-
-        <!-- TAB 3: FLEX COLUMN (KECIL) -->
-        <main id="view-tab-3" class="hidden">
-            <section class="control-panel">
-                <div class="upload-box">
-                    <button class="upload-btn">&#128194; Upload Excel (Tab 3)</button>
-                    <input type="file" id="input-file-3" accept=".xlsx, .xls">
-                </div>
-                <div class="flex-spacer"></div>
-                <div class="stats" id="stats-3">0 Label</div>
-                <button class="action-btn btn-danger hidden" id="btn-reset-3" onclick="resetData(3)">&#10005; Reset</button>
-                <button class="action-btn btn-primary" id="btn-download-3" disabled onclick="generatePDF(3)">&#128196; Download PDF</button>
-            </section>
-
-            <div class="labels-grid-flex-col" id="grid-3">
-                <div class="empty-msg">Upload Excel untuk Tab 3.</div>
             </div>
         </main>
 
@@ -339,10 +312,10 @@
 <script>
     const state = {
         1: { raw: [], processed: [] }, 
-        2: { raw: [], processed: [] }, 
-        3: { raw: [], processed: [] }  
+        2: { raw: [], processed: [] }  
     };
 
+    // KONFIGURASI PDF LANDSCAPE
     const CFG = {
         pageW: 297, 
         pageH: 210, 
@@ -351,30 +324,19 @@
         gapX: 3, 
         gapY: 4,
         tab1_cols: 6, 
-        
-        // Config Kecil (Tab 3)
-        qtySideW_Small: 10, 
-        tab2_minW_Small: 30, 
-        tab2_maxW_Small: 120,
-
-        // Config Besar (Tab 2)
-        qtySideW_Large: 14, // Lebar kotak Qty besar
-        tab2_minW_Large: 50, // Lebar minimum kotak besar
-        tab2_maxW_Large: 150 
+        qtySideW: 14, // Lebar kotak qty (mm)
+        tab2_minW: 50, // Lebar minimum (mm) - disesuaikan dengan font besar
+        tab2_maxW: 150 // Lebar maksimum (mm)
     };
 
     document.getElementById('input-file-1').addEventListener('change', (e) => handleFile(e, 1));
     document.getElementById('input-file-2').addEventListener('change', (e) => handleFile(e, 2));
-    document.getElementById('input-file-3').addEventListener('change', (e) => handleFile(e, 3));
 
     function switchTab(tabId) {
         document.getElementById('view-tab-1').classList.add('hidden');
         document.getElementById('view-tab-2').classList.add('hidden');
-        document.getElementById('view-tab-3').classList.add('hidden');
-        
         document.getElementById('btn-tab-1').classList.remove('active');
         document.getElementById('btn-tab-2').classList.remove('active');
-        document.getElementById('btn-tab-3').classList.remove('active');
 
         document.getElementById(`view-tab-${tabId}`).classList.remove('hidden');
         document.getElementById(`btn-tab-${tabId}`).classList.add('active');
@@ -479,24 +441,8 @@
             const card = document.createElement('div');
             
             if (tabId === 2) {
-                // TAB 2: FLEX LARGE (BESAR)
-                card.className = 'label-card flex-large';
-                card.innerHTML = `
-                    <div class="label-main">
-                        <div class="label-top">
-                            <span class="part-number" title="${item.part}">${item.part}</span>
-                        </div>
-                        <div class="desc-area">
-                            <span class="desc-text" title="${item.desc}">${item.desc}</span>
-                        </div>
-                    </div>
-                    <div class="qty-side">
-                        <span class="qty-text">${item.qty}</span>
-                    </div>
-                `;
-            } else if (tabId === 3) {
-                // TAB 3: FLEX MODE SMALL (KECIL)
                 card.className = 'label-card flex-mode';
+                // Struktur HTML Baru untuk Posisi Tengah & Flex
                 card.innerHTML = `
                     <div class="label-main">
                         <div class="label-top">
@@ -511,7 +457,6 @@
                     </div>
                 `;
             } else {
-                // TAB 1: FIXED
                 card.className = 'label-card fixed-mode';
                 card.innerHTML = `
                     <div class="label-content" style="width:100%; display:flex; flex-direction:column; padding:2px 4px;">
@@ -555,14 +500,9 @@
         setTimeout(() => {
             if (tabId === 1) {
                 generateTab1PDF(doc, data);
-            } else if (tabId === 2) {
-                // TAB 2: FUNGSI BESAR
-                generateTab2LargePDF(doc, data);
             } else {
-                // TAB 3: FUNGSI KECIL & COLUMN MAJOR
-                generateTab3PDF(doc, data);
+                generateTab2PDF(doc, data);
             }
-            
             doc.save(`Label_Tab${tabId}_${new Date().getTime()}.pdf`);
             showToast("PDF berhasil diunduh!", "success");
 
@@ -597,12 +537,14 @@
             doc.setDrawColor(0); doc.setLineWidth(0.2);
             doc.rect(cursor.x, cursor.y, colWidth, CFG.labelH);
 
+            // Part
             doc.setFont("helvetica", "bold"); doc.setFontSize(9); doc.setTextColor(0,0,0);
             const centerX = cursor.x + (colWidth / 2);
             doc.text(item.part, centerX, cursor.y + 4, { align: 'center', maxWidth: colWidth - 4 });
 
             doc.line(cursor.x, cursor.y + 5.5, cursor.x + colWidth, cursor.y + 5.5);
 
+            // Desc
             doc.setFont("helvetica", "normal"); doc.setFontSize(6); doc.setTextColor(60,60,60);
             const splitDesc = doc.splitTextToSize(item.desc, colWidth - 4);
             doc.text(splitDesc, centerX, cursor.y + 9, { align: 'center' });
@@ -612,30 +554,30 @@
         });
     }
 
-    function generateTab2LargePDF(doc, data) {
-        // FUNGSI KHUSUS TAB 2 (FONTS & KOTAK BESAR)
+    function generateTab2PDF(doc, data) {
+        // LOGIKA FLEXIBLE PDF (TAB 2) - TENGAH & FONTS BESAR
         let cursor = { x: CFG.margin, y: CFG.margin };
-        const currentQtySideW = CFG.qtySideW_Large;
 
         data.forEach((item) => {
-            // Font Besar
-            doc.setFont("helvetica", "bold"); doc.setFontSize(14); 
+            // 1. Hitung Ukuran Font Besar
+            doc.setFont("helvetica", "bold"); doc.setFontSize(14); // UKURAN FONT SANGAT BESAR
             const partWidth = doc.getTextWidth(item.part);
             
-            // Padding Lebar
+            // Padding lebih longgar untuk font besar
             const paddingX = 10; 
             let contentWidth = partWidth + paddingX;
 
-            // Min/Max Width Besar
-            if (contentWidth < CFG.tab2_minW_Large - currentQtySideW) {
-                contentWidth = CFG.tab2_minW_Large - currentQtySideW;
+            // Min/Max Width
+            if (contentWidth < CFG.tab2_minW - CFG.qtySideW) {
+                contentWidth = CFG.tab2_minW - CFG.qtySideW;
             }
-            if (contentWidth > CFG.tab2_maxW_Large - currentQtySideW) {
-                contentWidth = CFG.tab2_maxW_Large - currentQtySideW;
+            if (contentWidth > CFG.tab2_maxW - CFG.qtySideW) {
+                contentWidth = CFG.tab2_maxW - CFG.qtySideW;
             }
 
-            const totalWidth = contentWidth + currentQtySideW;
+            const totalWidth = contentWidth + CFG.qtySideW;
 
+            // 2. Cek Posisi Baris/Halaman
             if (cursor.x + totalWidth > CFG.pageW - CFG.margin) {
                 cursor.y += CFG.labelH + CFG.gapY;
                 cursor.x = CFG.margin;
@@ -647,117 +589,43 @@
                 }
             }
 
-            // Draw Box
+            // 3. GAMBAR KOTAK KIRI (KONTEN)
             doc.setDrawColor(0); doc.setLineWidth(0.2);
             doc.rect(cursor.x, cursor.y, contentWidth, CFG.labelH);
 
-            const dividerY = cursor.y + 7; // Divider lebih rendah
+            // Garis Pemisah (Lebih rendah karena font besar butuh ruang)
+            const dividerY = cursor.y + 7; 
             doc.line(cursor.x, dividerY, cursor.x + contentWidth, dividerY);
 
-            // Text Part (Center)
+            // --- PART NUMBER (CENTER, BESAR) ---
             doc.setTextColor(0,0,0);
             const centerX = cursor.x + (contentWidth / 2);
+            // Turunkan sedikit Y agar visual terlihat tengah di ruang atas
             doc.text(item.part, centerX, cursor.y + 5, { align: 'center', maxWidth: contentWidth - 2 });
 
-            // Text Desc (Flexible, font sedikit besar)
-            doc.setFont("helvetica", "normal"); doc.setFontSize(7); 
+            // --- DESKRIPSI (CENTER, FLEKSIBLE) ---
+            doc.setFont("helvetica", "normal"); doc.setFontSize(5); // Font kecil agar muat banyak kalimat
             doc.setTextColor(60,60,60);
-            const splitDesc = doc.splitTextToSize(item.desc, contentWidth - 4); 
-            const descY = cursor.y + 10.5;
+            const splitDesc = doc.splitTextToSize(item.desc, contentWidth - 4); // MaxWidth sesuai kotak
+            // Hitung posisi tengah untuk deskripsi (Ruang bawah)
+            // Kita letakkan sedikit di atas batas bawah
+            const descY = cursor.y + 10;
             doc.text(splitDesc, centerX, descY, { align: 'center' });
 
-            // Qty Box (Lebar Besar)
+            // 4. GAMBAR KOTAK KANAN (QTY)
             const qtyX = cursor.x + contentWidth;
             doc.setFillColor(241, 245, 249);
-            doc.rect(qtyX, cursor.y, currentQtySideW, CFG.labelH, 'FD');
+            doc.rect(qtyX, cursor.y, CFG.qtySideW, CFG.labelH, 'FD');
 
-            // Qty Text (Besar)
-            doc.setFont("helvetica", "bold"); doc.setFontSize(12); 
+            // --- QTY TEXT (CENTER, BESAR) ---
+            doc.setFont("helvetica", "bold"); doc.setFontSize(13); // Font besar juga
             doc.setTextColor(0,0,0);
-            const qtyCenterX = qtyX + (currentQtySideW / 2);
-            const qtyCenterY = cursor.y + (CFG.labelH / 2) + 1.5; 
+            const qtyCenterX = qtyX + (CFG.qtySideW / 2);
+            const qtyCenterY = cursor.y + (CFG.labelH / 2) + 1; // +1 untuk baseline adjustment
             doc.text(String(item.qty), qtyCenterX, qtyCenterY, { align: 'center' });
 
+            // 5. Geser Cursor
             cursor.x += totalWidth + CFG.gapX;
-        });
-    }
-
-    function generateTab3PDF(doc, data) {
-        // FUNGSI TAB 3 (KECIL & COLUMN MAJOR)
-        
-        const availableHeight = CFG.pageH - (2 * CFG.margin);
-        const itemTotalHeight = CFG.labelH + CFG.gapY;
-        const itemsPerCol = Math.floor(availableHeight / itemTotalHeight);
-        const columnsData = [];
-        for (let i = 0; i < data.length; i += itemsPerCol) {
-            columnsData.push(data.slice(i, i + itemsPerCol));
-        }
-
-        let cursorX = CFG.margin;
-        
-        columnsData.forEach((colItems, colIndex) => {
-            let maxColWidth = 0;
-            
-            // Hitung lebar maks kolom (Kecil)
-            colItems.forEach(item => {
-                doc.setFont("helvetica", "bold"); doc.setFontSize(9);
-                const partWidth = doc.getTextWidth(item.part);
-                const paddingX = 6;
-                let contentW = partWidth + paddingX;
-                if (contentW < CFG.tab2_minW_Small - CFG.qtySideW_Small) contentW = CFG.tab2_minW_Small - CFG.qtySideW_Small;
-                if (contentW > CFG.tab2_maxW_Small - CFG.qtySideW_Small) contentW = CFG.tab2_maxW_Small - CFG.qtySideW_Small;
-                const totalW = contentW + CFG.qtySideW_Small;
-                if (totalW > maxColWidth) maxColWidth = totalW;
-            });
-
-            if (cursorX + maxColWidth > CFG.pageW - CFG.margin) {
-                doc.addPage();
-                cursorX = CFG.margin;
-            }
-
-            let cursorY = CFG.margin;
-            colItems.forEach((item) => {
-                doc.setFont("helvetica", "bold"); doc.setFontSize(9);
-                const partWidth = doc.getTextWidth(item.part);
-                const paddingX = 6;
-                let contentWidth = partWidth + paddingX;
-                if (contentWidth < CFG.tab2_minW_Small - CFG.qtySideW_Small) contentWidth = CFG.tab2_minW_Small - CFG.qtySideW_Small;
-                if (contentWidth > CFG.tab2_maxW_Small - CFG.qtySideW_Small) contentWidth = CFG.tab2_maxW_Small - CFG.qtySideW_Small;
-                const totalWidth = contentWidth + CFG.qtySideW_Small;
-
-                // Draw Box
-                doc.setDrawColor(0); doc.setLineWidth(0.2);
-                doc.rect(cursorX, cursorY, contentWidth, CFG.labelH);
-
-                const dividerY = cursorY + 5.5; 
-                doc.line(cursorX, dividerY, cursorX + contentWidth, dividerY);
-
-                // Text Part (Center)
-                doc.setTextColor(0,0,0);
-                const centerX = cursorX + (contentWidth / 2);
-                doc.text(item.part, centerX, cursorY + 4, { align: 'center', maxWidth: contentWidth - 2 });
-
-                // Text Desc (Center, Small)
-                doc.setFont("helvetica", "normal"); doc.setFontSize(6); 
-                doc.setTextColor(60,60,60);
-                const splitDesc = doc.splitTextToSize(item.desc, contentWidth - 4); 
-                doc.text(splitDesc, centerX, cursorY + 9, { align: 'center' });
-
-                // Qty Box (Small)
-                const qtyX = cursorX + contentWidth;
-                doc.setFillColor(241, 245, 249);
-                doc.rect(qtyX, cursorY, CFG.qtySideW_Small, CFG.labelH, 'FD');
-
-                doc.setFont("helvetica", "bold"); doc.setFontSize(9); 
-                doc.setTextColor(0,0,0);
-                const qtyCenterX = qtyX + (CFG.qtySideW_Small / 2);
-                const qtyCenterY = cursorY + (CFG.labelH / 2) + 1; 
-                doc.text(String(item.qty), qtyCenterX, qtyCenterY, { align: 'center' });
-
-                cursorY += CFG.labelH + CFG.gapY;
-            });
-
-            cursorX += maxColWidth + CFG.gapX;
         });
     }
 </script>
